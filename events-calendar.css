@@ -1,0 +1,60 @@
+.event-date {
+    font-size: 1.5em;
+    font-weight: bold;
+    color: var(--entry-header--color, #28303d);
+    background-color: var(--global--color-background, #d1e4dd);
+    padding: 10px;
+    margin: 3% 0;
+    text-align: center;
+    border-radius: 10px;
+}
+
+.event-title {
+    text-align: left;
+    font-size: 1.8em;
+    font-weight: bold;
+    color: var(--entry-header--color, #28303d);
+    margin: 0 0 3% 0;
+    text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.2);
+}
+
+.event-content {
+    font-size: 1.2em;
+    line-height: 1.5;
+    color: var(--entry-header--color, #28303d);
+    margin: 0;
+    overflow: hidden;
+}
+
+.event-card {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    min-height: 200px;
+    padding: 8%;
+    background-color: #fff;
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+    border-radius: 10px;
+}
+
+/* Display the events in a grid with equal-sized columns */
+.events-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    grid-gap: 20px;
+    max-width: 80% !important;
+}
+
+/* Reduce the number of columns on larger screens */
+@media (max-width: 1200px) {
+    .events-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+/* Reduce the number of columns on even larger screens */
+@media (max-width: 992px) {
+    .events-grid {
+        grid-template-columns: repeat(1, 1fr);
+    }
+}
