@@ -2,11 +2,19 @@
 /*
 Plugin Name: Events Calendar
 Description: A custom plugin to create and display events using a custom post type.
-Version: 1.3.0
+Version: 1.7.1
 Author: Riley Litchfield
 Author URI: https://rileylitchfield.com
 License: GPL2
 */
+
+function load_admin_script()
+{
+  wp_enqueue_script('jquery');
+  wp_enqueue_style('jquery-ui-css', 'https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css');
+  wp_enqueue_script('jquery-ui-js', 'https://code.jquery.com/ui/1.12.1/jquery-ui.js', array('jquery'));
+}
+add_action('admin_enqueue_scripts', 'load_admin_script');
 
 // Add CSS
 function events_cal_enqueue_styles()
@@ -15,17 +23,10 @@ function events_cal_enqueue_styles()
 }
 add_action('wp_enqueue_scripts', 'events_cal_enqueue_styles');
 
-// Enqueue the jQuery UI Datepicker library
-function events_cal_enqueue_scripts()
-{
-  wp_enqueue_script('jquery-ui-datepicker');
-}
-add_action('wp_enqueue_scripts', 'events_cal_enqueue_scripts');
-
 // Add a custom meta box for the event date
 function events_cal_add_meta_box()
 {
-  add_meta_box('event-date', 'Event Date', 'events_cal_meta_box_callback', 'event', 'side');
+  add_meta_box('event-date-meta-box', 'Event Date', 'events_cal_meta_box_callback', 'event', 'side');
 }
 add_action('add_meta_boxes', 'events_cal_add_meta_box');
 
@@ -40,12 +41,13 @@ function events_cal_meta_box_callback($post)
 
   // Display the date selector field
 ?>
-<label for="event-date">Event Date:</label>
-<input type="text" id="event-date" name="event-date" value="<?php echo esc_attr($event_date); ?>" />
+<label for="event-date-input">Event Date:</label>
+<input type="text" id="event-date-input" name="event-date" value="<?php echo esc_attr($event_date); ?>" />
 <script>
+  console.log("Datepicker initialized on #event-date-input element");
   jQuery(document).ready(function ($) {
-    $('#event-date').datepicker({
-      dateFormat: 'yy-mm-dd'
+    $('#event-date-input').datepicker({
+      dateFormat: 'mm-dd-yy'
     });
   });
 </script>
