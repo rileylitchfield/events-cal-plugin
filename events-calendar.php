@@ -2,7 +2,7 @@
 /*
 Plugin Name: Events Calendar
 Description: A custom plugin to create and display events using a custom post type.
-Version: 1.7.1
+Version: 2.0.3
 Author: Riley Litchfield
 Author URI: https://rileylitchfield.com
 License: GPL2
@@ -111,21 +111,11 @@ function my_custom_post_type()
     'supports' => array('title', 'editor', 'author', 'thumbnail', 'excerpt', 'comments')
   );
 
+  // Register the custom post type
   register_post_type('event', $args);
+
 }
 add_action('init', 'my_custom_post_type');
-
-// Function to truncate the content
-function truncate_the_content($content)
-{
-  // Truncate the content to 200 characters
-  $truncated_content = substr($content, 0, 200);
-  // Return the truncated content
-  return $truncated_content;
-}
-
-// Hook the truncate function to the the_content filter
-add_filter('the_content', 'truncate_the_content');
 
 // Query and display function
 function display_events()
@@ -153,12 +143,18 @@ function display_events()
       $events->the_post();
       // Get the event date
       $event_date = get_post_meta(get_the_ID(), 'event_date', true);
+      // Get the value of the "event_location" custom field
+      $event_location = get_field('event_location');
+      // Get the URL for the event details page
+      $event_url = get_permalink();
   ?>
   <div class="event-card">
     <!-- Access the current post's data using template functions -->
     <h2 class="event-title"><?php the_title(); ?></h2>
+    <p style="font-size:0.8rem;font-weight:bold"><?php echo $event_location ?></p>
+    <p class="event-content"><?php echo substr(wp_strip_all_tags(get_the_content()), 0, 100); ?></p>
     <p class="event-date"><?php echo esc_html($event_date); ?></p>
-    <p class="event-content"><?php the_content(); ?></p>
+    <a href="<?php echo $event_url; ?>" class="btn btn-primary">View Details</a>
   </div>
   <?php
     }
